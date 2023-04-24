@@ -2,64 +2,34 @@ name: Build and push Image to AWS ECR
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  # build:
-  #   runs-on: [self-hosted, linux]
-  #   steps:
-  #   - name: checkout
-  #     uses: actions/checkout@v3
-  #   - name: Configure AWS credentials
-  build-and-push:
-    name: Build and Push to ECR
+  build:
     runs-on: [self-hosted, linux]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Automatic Tagging of Releases
-      id: increment-git-tag
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Install Docker
+      run: | 
+        sudo yum install docker -y
+        sudo systemctl start docker
+        sudo systemctl status docker  
+    - name: Build Image 
+      run : |
+        cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
+        sudo docker build -t helloworld .
+    - name: Build and push ECR
+      run : |
+        aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
+        docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+        docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+    - name: Clean Up all
       run: |
-        bash ./build/git_update.sh -v major
-
-    
-    - name: Build, Tag, and Push the Image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: lesson-086
-        IMAGE_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    # - name: Install Docker
-    #   run: | 
-    #     sudo yum install docker -y
-    #     sudo systemctl start docker
-    #     sudo systemctl status docker  
-    # - name: Build Image 
-    #   run : |
-    #     cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
-    #     sudo docker build -t helloworld .
-    # # - name: Docker Setup QEMU
-    # #   uses: docker/setup-qemu-action@v2.1.0
-    # - name: Build and push ECR
-    #   run : |
-    #     echo "helloworld"
-    # - name: Clean Up all
-    #   run: |
-
+        sudo docker rmi -f $(sudo docker images -a -q)
+        sudo yum remove docker 
+      
     # - name: Docker Build and Upload to AWS ECR
     #   uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
     #   with:
