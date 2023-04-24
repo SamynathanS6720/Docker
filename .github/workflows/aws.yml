@@ -22,6 +22,7 @@ jobs:
         sudo docker build -t helloworld .
     - name: Build and push ECR
       run : |
+        sudo su -
         aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
         docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
         docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
