@@ -13,7 +13,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Install Docker
       run: | 
-        sudo yum install Docker
+        sudo yum install docker
         sudo systemctl start docker
         sudo systemctl status docker  
     - name: Build Image 
