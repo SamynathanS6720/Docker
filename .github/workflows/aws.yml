@@ -1,4 +1,4 @@
-name: Build and push golang Imagr to AWS ECR
+name: Build and push Image to AWS ECR
 on:
   push:
     branches: [ main ]
