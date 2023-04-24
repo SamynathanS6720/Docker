@@ -22,6 +22,7 @@ jobs:
         sudo docker build -t helloworld .
     - name: pre deployment
       run : |
+        sudo usermod -aG docker $USER
         newgrp docker  
         docker ps
     - name: Test 2
