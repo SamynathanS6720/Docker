@@ -30,6 +30,4 @@ jobs:
     - name: Clean Up all
       run: |
         sudo docker rmi -f $(sudo docker images -a -q)
-        sudo gpasswd -d $USER docker
-        sudo groupdel docker
         sudo yum remove docker -y
