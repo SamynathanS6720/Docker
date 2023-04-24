@@ -6,6 +6,10 @@ jobs:
   build:
     runs-on: [self-hosted, linux]
     steps:
+    - name: Install Docker
+  # You may pin to the exact commit or the version.
+  # uses: papodaca/install-docker-action@6689d765bf69e0b79e9352e11203caf4acd1d25c
+      uses: papodaca/install-docker-action@v1
     - name: Build and push ECR
       uses: actions/checkout@v2
     - name: Docker Build and Upload to AWS ECR
