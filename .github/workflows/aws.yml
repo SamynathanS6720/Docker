@@ -13,16 +13,16 @@ jobs:
       uses: papodaca/install-docker-action@v1
     - name: Build and push ECR
       uses: actions/checkout@v2
-    - name: Docker Build and Upload to AWS ECR
-      uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
-      with:
-        # The AWS access key id
-        access_key_id: AKIAWOX5NRMU2DUZGRM5
-        # The AWS secret access key
-        secret_access_key: IWDqhAG5jLAs/HXYcoN6NUH9uuijEBdPitDdB7iu
-        # AWS Account ID
-        account_id: 443986840361
-        # Name of your ECR repository
-        repo: public.ecr.aws/x3w3n0r1/docker
-        # The AWS region
-        region: ap-southeast-2
+    # - name: Docker Build and Upload to AWS ECR
+    #   uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
+    #   with:
+    #     # The AWS access key id
+    #     access_key_id: AKIAWOX5NRMU2DUZGRM5
+    #     # The AWS secret access key
+    #     secret_access_key: IWDqhAG5jLAs/HXYcoN6NUH9uuijEBdPitDdB7iu
+    #     # AWS Account ID
+    #     account_id: 443986840361
+    #     # Name of your ECR repository
+    #     repo: public.ecr.aws/x3w3n0r1/docker
+    #     # The AWS region
+    #     region: ap-southeast-2
