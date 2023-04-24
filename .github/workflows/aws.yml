@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: [self-hosted, linux]
     steps:
-<<<<<<< HEAD
     - name: checkout
       uses: actions/checkout@v3
     - name: Install Docker
@@ -21,10 +20,8 @@ jobs:
       run : |
         cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
         sudo docker build -t helloworld .
-=======
     - name: Docker Setup QEMU
       uses: docker/setup-qemu-action@v2.1.0
->>>>>>> 021580aa1a7f1afbb60de01c2c8b6e5d95ea53a4
     - name: Build and push ECR
       run : |
         echo "helloworld"
