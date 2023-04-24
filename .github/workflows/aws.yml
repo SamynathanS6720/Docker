@@ -2,26 +2,26 @@ name: Build and push golang Imagr to AWS ECR
 on:
   push:
     branches: [ main ]
-  jobs:
-    build-and-push:
+jobs:
+  build:
+    runs-on: [self-hosted, linux]
+    steps:
     - name: Build and push ECR
-      runs-on: [self-hosted, linux]
-      steps:
-      - uses: actions/checkout@v3
-      - name: Docker Build and Upload to AWS ECR
-        uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
-        with:
-          # The AWS access key id
-          access_key_id: AKIAWOX5NRMU2DUZGRM5
-          # The AWS secret access key
-          secret_access_key: IWDqhAG5jLAs/HXYcoN6NUH9uuijEBdPitDdB7iu
-          # AWS Account ID
-          account_id: 443986840361
-          # Name of your ECR repository
-          repo: public.ecr.aws/x3w3n0r1/docker
-          # The AWS region
-          region: ap-southeast-2
-          # Set this to true to create the repository if it does not already exist
+    - uses: actions/checkout@v3
+    - name: Docker Build and Upload to AWS ECR
+      uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
+      with:
+        # The AWS access key id
+        access_key_id: AKIAWOX5NRMU2DUZGRM5
+        # The AWS secret access key
+        secret_access_key: IWDqhAG5jLAs/HXYcoN6NUH9uuijEBdPitDdB7iu
+        # AWS Account ID
+        account_id: 443986840361
+        # Name of your ECR repository
+        repo: public.ecr.aws/x3w3n0r1/docker
+        # The AWS region
+        region: ap-southeast-2
+        # Set this to true to create the repository if it does not already exist
 #             create_repo: # optional
 #             # Comma-separated string of ECR image tags
 #             tags: # optional, default is latest
