@@ -30,8 +30,8 @@ jobs:
     #     --image-ids imageTag=latest
     - name: push to ECR
       run: |    
-        docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
-        docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+        sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+        sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
     - name: Clean Up all
       run: |
         sudo docker rmi -f $(sudo docker images -a -q)
