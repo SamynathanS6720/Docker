@@ -2,6 +2,9 @@ name: Build and push golang Imagr to AWS ECR
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: [self-hosted, linux]
