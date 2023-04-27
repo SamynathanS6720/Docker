@@ -23,6 +23,10 @@ jobs:
     - name: pre deployment
       run:  
         aws ecr get-login-password --region ap-southeast-2 | sudo docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
+        aws ecr batch-delete-image \
+        --repository-name docker-repository\
+        --image-ids imageTag=latest
+
     - name: push to ECR
       run: |    
         sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
