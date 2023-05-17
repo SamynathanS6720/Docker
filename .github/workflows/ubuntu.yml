@@ -37,7 +37,7 @@ jobs:
     - name: Clean Up allvol
       run: |
         sudo docker rmi -f $(sudo docker images -a -q)
-        sudo apt-get purge docker-ce docker-ce-cli containerd.io
+        sudo apt-get purge docker-ce docker-ce-cli containerd.io -y
         sudo rm -rf /var/lib/docker
         sudo apt-get autoremove -y
 
