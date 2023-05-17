@@ -19,20 +19,22 @@ jobs:
         echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo apt update -y
         sudo apt install docker-ce docker-ce-cli containerd.io -y
+    - name: Start Docker
+      run : |    
         sudo systemctl start docker
         sudo usermod -aG docker $USER 
-    - name: Build Image 
-      run : |
-        cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
-        sudo docker build -t client .
-    - name: pre deployment
-      run: | 
-        aws ecr get-login-password --region ap-southeast-2 | sudo docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
-        aws ecr batch-delete-image --repository-name docker-repository --image-ids imageTag=latest
-    - name: push to ECR
-      run: |    
-        sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
-        sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+    # - name: Build Image 
+    #   run : |
+    #     cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
+    #     sudo docker build -t client .
+    # - name: pre deployment
+    #   run: | 
+    #     aws ecr get-login-password --region ap-southeast-2 | sudo docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
+    #     aws ecr batch-delete-image --repository-name docker-repository --image-ids imageTag=latest
+    # - name: push to ECR
+    #   run: |    
+    #     sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+    #     sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
     - name: Clean Up allvol
       run: |
         sudo docker rmi -f $(sudo docker images -a -q)
