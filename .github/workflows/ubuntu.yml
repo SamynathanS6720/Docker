@@ -1,0 +1,50 @@
+name: Build and push Image to AWS ECR
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, ubuntu]
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Install Docker
+      run: | 
+        sudo apt update
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        echo "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt update
+        sudo apt install docker-ce docker-ce-cli containerd.io
+        sudo systemctl start docker
+        sudo docker run hello-world
+        sudo usermod -aG docker $USER 
+    - name: Build Image 
+      run : |
+        cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
+        sudo docker build -t client .
+    - name: pre deployment
+      run: | 
+        aws ecr get-login-password --region ap-southeast-2 | sudo docker login --username AWS --password-stdin 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com
+        aws ecr batch-delete-image --repository-name docker-repository --image-ids imageTag=latest
+    - name: push to ECR
+      run: |    
+        sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+        sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+    - name: Clean Up allvol
+      run: |
+        sudo docker rmi -f $(sudo docker images -a -q)
+        sudo apt-get purge docker-ce docker-ce-cli containerd.io
+        sudo rm -rf /var/lib/docker
+        sudo apt-get autoremove
+
+
+
+
+
+
+
