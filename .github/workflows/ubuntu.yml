@@ -36,9 +36,9 @@ jobs:
     #   run: |    
     #     sudo docker tag helloworld:latest 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
     #     sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
+    # echo "Kadit@234" | sudo -S docker rmi -f $(sudo -S docker images -a -q)
     - name: Clean Up allvol
       run: |
-        echo "Kadit@234" | sudo -S docker rmi -f $(sudo -S docker images -a -q)
         echo "Kadit@234" | sudo -S apt-get purge docker-ce docker-ce-cli containerd.io -y
         echo "Kadit@234" | sudo -S rm -rf /var/lib/docker
         echo "Kadit@234" | sudo -S apt-get autoremove -y
