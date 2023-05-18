@@ -23,6 +23,7 @@ jobs:
       run : |    
         echo "Kadit@234" | sudo -S systemctl start docker
         echo "Kadit@234" | sudo -S usermod -aG docker $USER 
+        docker run hello-world
     # - name: Build Image 
     #   run : |
     #     cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
