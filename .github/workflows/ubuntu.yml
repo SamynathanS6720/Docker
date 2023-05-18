@@ -21,8 +21,8 @@ jobs:
         sudo apt install docker-ce docker-ce-cli containerd.io -y
     - name: Start Docker
       run : |    
-        sudo systemctl start docker
-        sudo usermod -aG docker $USER 
+        echo "Kadit@234" | sudo -S systemctl start docker
+        echo "Kadit@234" | sudo -S usermod -aG docker $USER 
     # - name: Build Image 
     #   run : |
     #     cd /home/ec2-user/actions-runner/_Docker/Docker/Docker
