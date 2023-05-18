@@ -37,10 +37,10 @@ jobs:
     #     sudo docker push 443986840361.dkr.ecr.ap-southeast-2.amazonaws.com/docker-repository:latest
     - name: Clean Up allvol
       run: |
-        sudo docker rmi -f $(sudo docker images -a -q)
-        sudo apt-get purge docker-ce docker-ce-cli containerd.io -y
-        sudo rm -rf /var/lib/docker
-        sudo apt-get autoremove -y
+        echo "Kadit@234" | sudo -S docker rmi -f $(sudo docker images -a -q)
+        echo "Kadit@234" | sudo -S apt-get purge docker-ce docker-ce-cli containerd.io -y
+        echo "Kadit@234" | sudo -S rm -rf /var/lib/docker
+        echo "Kadit@234" | sudo -S apt-get autoremove -y
 
 
 
